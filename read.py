@@ -18,10 +18,10 @@ class Exibir:
         resultados = conexao.executar_query("test", {})
         if resultados:
             for documento in resultados:
-                _id = documento.get("_id","ID Nao encontrado")
                 nome = documento.get("name", "Nome não encontrado")
                 ocupacao = documento.get("ocupation", "Ocupação não encontrada")
-                print(f"ID:{_id},Nome: {nome}, Ocupação: {ocupacao}")
+                print(f"Nome: {nome}, Ocupação: {ocupacao}")
+            print("")    
         else:
             print("Nenhum documento encontrado na coleção 'test'.")
         conexao.desconectar()   

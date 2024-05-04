@@ -34,9 +34,16 @@ while loop_on == True:
         remover.remover()
         
     if escolha == '3':
+        set_freeze = True
         limpar_terminal()
-        exibir = Exibir
-        exibir.exibir()
+        while set_freeze:
+            exibir = Exibir
+            exibir.exibir()
+            print('Gostaria de voltar ao menu? Y/N')
+            get_menu = input()
+            if (get_menu == 'Y') or (get_menu== 'y'):
+                set_freeze = False
+        limpar_terminal()
         
     if escolha == '4':
         limpar_terminal()
@@ -47,7 +54,7 @@ while loop_on == True:
         limpar_terminal()
         loop_on = False  
     
-    if escolha not in [1,2,3,4,5]:
+    if escolha not in ['1','2','3','4','5']:
         print(f'Opcao selecionada: {escolha}... aguarde.')
         time.sleep(1)
         print('.')
