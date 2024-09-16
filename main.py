@@ -1,9 +1,6 @@
 import os
 import time
-from add import Adicionar
-from remover import Remover
-from read import Exibir
-from atualizar import Atualizar
+from classes import crud_python
 from prettytable import PrettyTable
 
 def limpar_terminal():
@@ -29,15 +26,13 @@ while loop_on == True:
         print(f'Opcao selecionada: {escolha}... aguarde.')
         time.sleep(2)
         limpar_terminal()
-        adicionar = Adicionar
-        adicionar.adicionar()
+        crud_python.adicionar()
         
     if escolha == '2':
         print(f'Opcao selecionada: {escolha}... aguarde.')
         time.sleep(2)
         limpar_terminal()
-        remover = Remover
-        remover.remover()
+        crud_python.remover()
         
     if escolha == '3':
         print(f'Opcao selecionada: {escolha}... aguarde.')
@@ -45,8 +40,7 @@ while loop_on == True:
         set_freeze = True
         limpar_terminal()
         while set_freeze:
-            exibir = Exibir
-            exibir.exibir()
+            crud_python.exibir()
             print('Gostaria de voltar ao menu? Y/N')
             get_menu = input()
             if (get_menu == 'Y') or (get_menu== 'y'):
@@ -62,8 +56,7 @@ while loop_on == True:
         print(f'Opcao selecionada: {escolha}... aguarde.')
         time.sleep(2)
         limpar_terminal()
-        atualizar = Atualizar
-        atualizar.atualizar()
+        crud_python.atualizar()
         
     if escolha == '5':
         print(f'Opcao selecionada: {escolha}... aguarde.')
