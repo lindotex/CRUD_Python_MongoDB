@@ -1,101 +1,101 @@
 from dotenv import load_dotenv, find_dotenv
-from conn import ConexaoMongoDB
+from conn import ConnectionMongoDB
 import os
 from prettytable import PrettyTable
 
 class crud_python:
+    # PROTOTYPE
     def __init__(self) -> None:
         pass
 
     # CRUD - CREATE
-    def adicionar():
+    def create():
         load_dotenv(find_dotenv())
         db_url = os.environ.get('MONGO_URL')
-        conexao = ConexaoMongoDB(host=db_url)
+        connection = ConnectionMongoDB(host=db_url)
         
-        conexao.conectar()
-        print('Digite o nome a ser inserido:')
-        nome = str(input())
-        print(f'Digite a ocupacao que {nome} possui:')
-        ocupacao = str(input())
-        documento = {"name":nome, "ocupation":ocupacao}
+        connection.connect()
+        print('Insert the name to be created:')
+        name = str(input())
+        print(f'Insert the occupation of {name}:')
+        occupation = str(input())
+        document = {"name":name, "occupation":occupation}
 
-        conexao.inserir_documento('test',documento)
-        print(f'{nome} foi adicionado ao banco de dados com sucesso!')
-        conexao.desconectar()
+        connection.insert_document('test',document)
+        print(f'{name} has been successfully added to the database!')
+        connection.disconnect()
 
-      # CRUD - READ
-    def exibir():
+    # CRUD - READ
+    def read():
         load_dotenv(find_dotenv())
         db_url = os.environ.get('MONGO_URL')
-        conexao = ConexaoMongoDB(host=db_url)
-        conexao.conectar()
+        connection = ConnectionMongoDB(host=db_url)
+        connection.connect()
         print("")
-        conexao.quantidade_na_collection('test')
+        connection.quantity_in_collection('test')
         print("")
-        resultados = conexao.executar_query("test", {})
+        results = connection.execute_query("test", {})
         
         
-        if resultados:
+        if results:
                 
-            t = PrettyTable(['ID','Nome', 'Ocupacao'])
-            for documento in resultados:
+            t = PrettyTable(['NAME', 'OCCUPATION'])
+            for document in results:
                 
-                _id = documento.get("_id","ID Nao encontrado")
-                nome = documento.get("name", "Nome não encontrado")
-                ocupacao = documento.get("ocupation", "Ocupação não encontrada")
+                name = document.get("name", "name not found")
+                occupation = document.get("occupation", "occupation not found")
                 
-                t.add_row([f"{_id}",f"{nome}", f"{ocupacao}"])
+                t.add_row([f"{name}", f"{occupation}"])
             
             print(t)
         else:
-            print("Nenhum documento encontrado na coleção 'test'.")
-        conexao.desconectar()
+            print("No document has been found in your collection 'test'.")
+        connection.disconnect()
 
     # CRUD - UPDATE
-    def atualizar():
+    def update():
         load_dotenv(find_dotenv())
         db_url = os.environ.get('MONGO_URL')
-        conexao = ConexaoMongoDB(host=db_url)
-        conexao.conectar()
+        connection = ConnectionMongoDB(host=db_url)
+        connection.connect()
 
 
-        print('Digite o nome a ser Atualizado:')
-        nome = str(input())
-        print(f'Deseja realmente atualizar os dados de {nome} no banco de dados? Y/N')
-        res = str(input())
-        print(f'Insira a nova Ocupacao para {nome}:')
-        valor = str(input())
-        novos_dados = {"ocupation": valor}
+        print('Insert the name to be updated:')
+        name = str(input())
+        print(f'Would you really like to update the data of {name} on your database? Y/N')
+        response = str(input())
+        print(f'Insert the new occupation of {name}:')
+        value = str(input())
+        new_data = {"occupation": value}
 
-        if (res == 'y' or res == 'Y'):
+        if (response == 'y' or response == 'Y'):
             try:
-                conexao.atualizar_documento('test',{"name":nome}, novos_dados)
-                print(f'{nome} foi atualizado no banco de dados com sucesso!')
+                connection.update_document('test',{"name":name}, new_data)
+                print(f'{name} has been successfully update in database!')
             except Exception as e:
-                print('Nao foi possivel atualizar o usuario', e)
+                print('! It was not possible to update the data: ', e)
         else:
-            print(f'O usuario {nome} nao foi atualizado no banco de dados')
+            print(f'The user by the name {name} has not been found on our database')
 
-        conexao.desconectar() 
+        connection.disconnect() 
  
     # CRUD - DELETE
-    def remover():
+    def delete():
         load_dotenv(find_dotenv())
         db_url = os.environ.get('MONGO_URL')
-        conexao = ConexaoMongoDB(host=db_url)
-        conexao.conectar()
-        print('Digite o nome a ser removido:')
-        nome = str(input())
-        print(f'Deseja realmente remover {nome} do banco de dados? Y/N')
-        res = str(input())
+        connection = ConnectionMongoDB(host=db_url)
+        connection.connect()
+        print('Insert the name of the person to be removed:')
+        name = str(input())
+        print(f'Would you really like to remove {name} from your database? Y/N')
+        response = str(input())
 
-        if (res == 'y' or res == 'Y'):
+        if (response == 'y' or response == 'Y'):
             try:
-                conexao.remover_por_nome('test',nome)
-                print(f'{nome} foi removido do banco de dados com sucesso!')
+                connection.remove_by_name('test',name)
+                print(f'{name} has been successfully removed from the database!')
             except Exception as e:
-                print('Nao foi possivel remover o usuario', e)
+                print(f'It was not possible to remove {name}', e)
         else:
-            print(f'O usuario {nome} nao foi removido do banco de dados')
-        conexao.desconectar()
+            print(f'The user by the name of {name} could not be removed from the database')
+        connection.disconnect()
