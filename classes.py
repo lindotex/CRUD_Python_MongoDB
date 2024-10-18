@@ -19,7 +19,9 @@ class crud_python:
         name = str(input())
         print(f'Insert the occupation of {name}:')
         occupation = str(input())
-        document = {"name":name, "occupation":occupation}
+        print(f'Insert the salary of {name}:')
+        salary = float(input())
+        document = {"name":name, "occupation":occupation, "salary":salary}
 
         connection.insert_document('test',document)
         print(f'{name} has been successfully added to the database!')
