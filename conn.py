@@ -103,7 +103,7 @@ class ConnectionMongoDB:
         except Exception as e:
             print("Error during document update:", e)    
 
-    # DB DELETE
+    # DB DELETE BY NAME
     def remove_by_name(self, collection, name):
         if not self.client:
             print("Error:MongoDB has not stablish connection.")
@@ -120,6 +120,26 @@ class ConnectionMongoDB:
                 print(f"Document '{name}' have not been found.")
         except Exception as e:
             print("Error trying to remove document:", e)
+    
+    # DB DELETE BY TAG
+    def remove_by_tag(self, collection, tag):
+        if not self.client:
+            print("Error:MongoDB has not stablish connection.")
+            return
+
+        try:
+            # It removes the document from collection based on specified name
+            results = self.db[collection].delete_one({"tag": tag})
+            
+            # It verifies if the document has been successfully removed 
+            if results.deleted_count > 0:
+                print(f"Document '{tag}' successfully removed.")
+            else:
+                print(f"Document '{tag}' have not been found.")
+        except Exception as e:
+            print("Error trying to remove document:", e)
+        
+        
     
     
             

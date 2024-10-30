@@ -1,6 +1,6 @@
 import os
 import time
-from classes import crud_python
+from classes import crud_python, instruments
 from prettytable import PrettyTable
 
 def clean_terminal():
@@ -19,6 +19,8 @@ while loop_on == True:
     t.add_row(['3','READ'])
     t.add_row(['4','UPDATE'])
     t.add_row(['5','EXIT'])
+    t.add_row(['6','CREATE INSTRUMENT'])
+    t.add_row(['7','READ INSTRUMENT'])
     print(t)
     choice = input("Insert the desired routine number (1, 2, 3, 4 ou 5): ")
         
@@ -64,7 +66,19 @@ while loop_on == True:
         clean_terminal()
         loop_on = False  
     
-    if choice not in ['1','2','3','4','5']:
+    if choice == '6':
+        print(f'Selected option: {choice}... await.')
+        time.sleep(2)
+        clean_terminal()
+        instruments.create()
+    
+    if choice == '7':
+        print(f'Selected Option: {choice}... await.')
+        time.sleep(2)
+        clean_terminal()
+        instruments.read()
+    
+    if choice not in ['1','2','3','4','5','6','7']:
         print(f'Selected Option: {choice}... await.')
         time.sleep(1)
         print('.')
