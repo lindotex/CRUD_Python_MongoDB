@@ -3,7 +3,7 @@ from conn import ConnectionMongoDB
 import os
 from prettytable import PrettyTable
 
-class crud_python:
+class users:
     # PROTOTYPE
     def __init__(self) -> None:
         pass
@@ -23,7 +23,7 @@ class crud_python:
         salary = float(input())
         document = {"name":name, "occupation":occupation, "salary":salary}
 
-        connection.insert_document('test',document)
+        connection.insert_document('users',document)
         print(f'{name} has been successfully added to the database!')
         connection.disconnect()
 
@@ -34,9 +34,9 @@ class crud_python:
         connection = ConnectionMongoDB(host=db_url)
         connection.connect()
         print("")
-        connection.quantity_in_collection('test')
+        connection.quantity_in_collection('users')
         print("")
-        results = connection.execute_query("test", {})
+        results = connection.execute_query("users", {})
         
         
         if results:
@@ -51,7 +51,7 @@ class crud_python:
             
             print(t)
         else:
-            print("No document has been found in your collection 'test'.")
+            print("No document has been found in your collection 'users'.")
         connection.disconnect()
 
     # CRUD - UPDATE
@@ -72,7 +72,7 @@ class crud_python:
 
         if (response == 'y' or response == 'Y'):
             try:
-                connection.update_document('test',{"name":name}, new_data)
+                connection.update_document('users',{"name":name}, new_data)
                 print(f'{name} has been successfully update in database!')
             except Exception as e:
                 print('! It was not possible to update the data: ', e)
@@ -94,7 +94,7 @@ class crud_python:
 
         if (response == 'y' or response == 'Y'):
             try:
-                connection.remove_by_name('test',name)
+                connection.remove_by_name('users',name)
                 print(f'{name} has been successfully removed from the database!')
             except Exception as e:
                 print(f'It was not possible to remove {name}', e)

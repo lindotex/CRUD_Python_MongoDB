@@ -1,96 +1,60 @@
-import os
 import time
-from classes import crud_python, instruments
-from prettytable import PrettyTable
+from classes import users, instruments
+from operations import *
 
-def clean_terminal():
-    print('\033c', end='')
-    
+def handle_invalid_selection():
+    print('Selected option... not valid. Please enter a valid option.')
+    time.sleep(2)
+    clean_terminal()
+
+def handle_user_actions(loop_on):
+    clean_terminal()
+    show_users_menu()
+    select = input("Select the desired option:")
+    user_actions = {
+        '1': action_create,
+        '2': action_delete,
+        '3': lambda: action_read(loop_on),
+        '4': action_update,
+        '5': clean_terminal
+    }
+    action = user_actions.get(select, handle_invalid_selection)
+    if select == '3':
+        loop_on = action()
+    else:
+        action()
+    return loop_on
+
+def handle_instrument_actions(loop_on):
+    clean_terminal()
+    show_instruments_menu()
+    select = input("Select the desired option:")
+    instrument_actions = {
+        '1': action_create_instrument,
+        '2': action_delete_instrument,
+        '3': lambda: action_read_instrument(loop_on),
+        '4': action_update_instrument,
+        '5': clean_terminal
+    }
+    action = instrument_actions.get(select, handle_invalid_selection)
+    if select == '3':
+        loop_on = action()
+    else:
+        action()
+    return loop_on
+
 loop_on = True
+while loop_on:
+    show_menu()
+    choice = input("Insert the desired routine number (1, 2 OR 3):")
+    
+    main_actions = {
+        '1': lambda: handle_user_actions(loop_on),
+        '2': lambda: handle_instrument_actions(loop_on),
+        '3': lambda: (action_exit(), print('Exiting the system...'), time.sleep(2), False)
+    }
+    
+    action = main_actions.get(choice, lambda: (print('Invalid option, returning to the main menu...'), time.sleep(2), clean_terminal()))
+    loop_on = action() if choice in main_actions else loop_on
 
-while loop_on == True:
-    print('CONTROL SYSTEM')
-    print('CRUD WITH PYTHON AND MongoDB')
-    print('')
-    print('CHOSE YOR OPTION:')
-    t = PrettyTable(['NUMBER','ROUTINE'])
-    t.add_row(['1','CREATE'])
-    t.add_row(['2','DELETE'])
-    t.add_row(['3','READ'])
-    t.add_row(['4','UPDATE'])
-    t.add_row(['5','EXIT'])
-    t.add_row(['6','CREATE INSTRUMENT'])
-    t.add_row(['7','READ INSTRUMENT'])
-    print(t)
-    choice = input("Insert the desired routine number (1, 2, 3, 4 ou 5): ")
-        
-    if choice == '1':
-        print(f'Selected option: {choice}... await.')
-        time.sleep(2)
-        clean_terminal()
-        crud_python.create()
-        
-    if choice == '2':
-        print(f'Selected Option: {choice}... await.')
-        time.sleep(2)
-        clean_terminal()
-        crud_python.delete()
-        
-    if choice == '3':
-        print(f'Selected Option: {choice}... await.')
-        time.sleep(2)
-        set_freeze = True
-        clean_terminal()
-        while set_freeze:
-            crud_python.read()
-            print('Would you like to return to the main manu? Y/N')
-            get_menu = input()
-            if (get_menu == 'Y') or (get_menu== 'y'):
-                set_freeze = False
-            if (get_menu == 'N') or (get_menu== 'n'):
-                print('We are shutting down the system.')
-                time.sleep(2)
-                set_freeze = False
-                loop_on = False  
-        clean_terminal()
-        
-    if choice == '4':
-        print(f'Selected Option: {choice}... await.')
-        time.sleep(2)
-        clean_terminal()
-        crud_python.update()
-        
-    if choice == '5':
-        print(f'Selected Option: {choice}... await.')
-        time.sleep(2)
-        clean_terminal()
-        loop_on = False  
-    
-    if choice == '6':
-        print(f'Selected option: {choice}... await.')
-        time.sleep(2)
-        clean_terminal()
-        instruments.create()
-    
-    if choice == '7':
-        print(f'Selected Option: {choice}... await.')
-        time.sleep(2)
-        clean_terminal()
-        instruments.read()
-    
-    if choice not in ['1','2','3','4','5','6','7']:
-        print(f'Selected Option: {choice}... await.')
-        time.sleep(1)
-        print('.')
-        time.sleep(1)
-        print('...')
-        time.sleep(1)
-        print('.....')
-        time.sleep(1)
-        print(f'The value {choice} is not a valid option, we are returning you to the main menu...')
-        time.sleep(2)
-        clean_terminal()
-
-    
 print("The system has been finished. May you have a nice day.")
-
