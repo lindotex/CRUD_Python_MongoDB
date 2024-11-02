@@ -1,6 +1,5 @@
 import time
-from classes import users, instruments
-from operations import *
+from controllers.operations import *
 
 def handle_invalid_selection():
     print('Selected option... not valid. Please enter a valid option.')
@@ -44,6 +43,7 @@ def handle_instrument_actions(loop_on):
     return loop_on
 
 loop_on = True
+
 while loop_on:
     show_menu()
     choice = input("Insert the desired routine number (1, 2 OR 3):")
@@ -51,10 +51,10 @@ while loop_on:
     main_actions = {
         '1': lambda: handle_user_actions(loop_on),
         '2': lambda: handle_instrument_actions(loop_on),
-        '3': lambda: (action_exit(), print('Exiting the system...'), time.sleep(2), False)
+        '3': lambda: (action_exit(), print('Exiting the system...'), time.sleep(2))
     }
     
     action = main_actions.get(choice, lambda: (print('Invalid option, returning to the main menu...'), time.sleep(2), clean_terminal()))
-    loop_on = action() if choice in main_actions else loop_on
+    loop_on = action() if choice in main_actions else handle_invalid_selection
 
 print("The system has been finished. May you have a nice day.")

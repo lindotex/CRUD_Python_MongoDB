@@ -1,4 +1,5 @@
-from classes import users, instruments
+from classes.users import users
+from classes.instruments import instruments
 import time
 from prettytable import PrettyTable
 
@@ -28,8 +29,7 @@ def instruments_operations(operator):
         3: "update",
         4: "delete"
     }
-
-
+    
 
 # MENUS
 def show_menu():
