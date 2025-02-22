@@ -42,6 +42,24 @@ def handle_instrument_actions(loop_on):
         action()
     return loop_on
 
+def handle_equipment_actions(loop_on):
+    clean_terminal()
+    show_equipments_menu()
+    select = input("Select the desired option:")
+    equipment_actions = {
+        '1': action_create_equipment,
+        '2': action_delete_equipment,
+        '3': lambda: action_read_equipment(loop_on),
+        '4': action_update_equipment,
+        '5': clean_terminal
+    }
+    action = equipment_actions.get(select, handle_invalid_selection)
+    if select == '3':
+        loop_on = action()
+    else:
+        action()
+    return loop_on
+
 loop_on = True
 
 while loop_on:
@@ -51,7 +69,8 @@ while loop_on:
     main_actions = {
         '1': lambda: handle_user_actions(loop_on),
         '2': lambda: handle_instrument_actions(loop_on),
-        '3': lambda: (action_exit(), print('Exiting the system...'), time.sleep(2))
+        '3': lambda: handle_equipment_actions(loop_on),
+        '4': lambda: (action_exit(), print('Exiting the system...'), time.sleep(2))
     }
     
     action = main_actions.get(choice, lambda: (print('Invalid option, returning to the main menu...'), time.sleep(2), clean_terminal()))

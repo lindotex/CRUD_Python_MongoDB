@@ -1,5 +1,6 @@
 from classes.users import users
 from classes.instruments import instruments
+from classes.equipments import equipments
 import time
 from prettytable import PrettyTable
 
@@ -11,7 +12,8 @@ def operation(operator):
     switch = {
        1: "users",
        2: "instruments",
-       3: "exit"
+       3: "equipments",
+       4: "exit"
     }
 
 def users_operations(operator):
@@ -30,6 +32,13 @@ def instruments_operations(operator):
         4: "delete"
     }
     
+def equipments_operations(operator):
+    switch = {
+        1: "create",
+        2: "read",
+        3: "update",
+        4: "delete"
+    }
 
 # MENUS
 def show_menu():
@@ -40,7 +49,8 @@ def show_menu():
     t = PrettyTable(['NUMBER','ROUTINE'])
     t.add_row(['1','USERS'])
     t.add_row(['2','INSTRUMENTS'])
-    t.add_row(['3','EXIT'])
+    t.add_row(['3','EQUIPMENTS'])
+    t.add_row(['4','EXIT'])
     print(t)
 
 def show_users_menu():
@@ -62,13 +72,21 @@ def show_instruments_menu():
     t.add_row(['4', 'UPDATE'])
     t.add_row(['5', 'BACK'])
     print(t)
+
+def show_equipments_menu():
+    print('USERS MENU')
+    t = PrettyTable(['NUMBER', 'ROUTINE'])
+    t.add_row(['1', 'CREATE'])
+    t.add_row(['2', 'DELETE'])
+    t.add_row(['3', 'READ'])
+    t.add_row(['4', 'UPDATE'])
+    t.add_row(['5', 'BACK'])
+    print(t)
     
 def action_exit():
     print('Selected Option: 3... await.')
     time.sleep(2)
     clean_terminal()
-
-
 
 # USERS - CRUD
 def action_create():
@@ -108,8 +126,6 @@ def action_update():
     clean_terminal()
     users.update()
 
-
-
 # INSTRUMENTS - CRUD
 def action_create_instrument():
     print('Selected option: 1... await.')
@@ -147,3 +163,42 @@ def action_delete_instrument():
     time.sleep(2)
     clean_terminal()
     instruments.delete()
+
+# EQUIPMENT - CRUD
+def action_create_equipment():
+    print('Selected option: 1... await.')
+    time.sleep(2)
+    clean_terminal()
+    equipments.create()
+
+def action_delete_equipment():
+    print('Selected Option: 2... await.')
+    time.sleep(2)
+    clean_terminal()
+    equipments.delete()
+
+def action_read_equipment(loop_on):
+    print('Selected Option: 3... await.')
+    time.sleep(2)
+    clean_terminal()
+    set_freeze = True
+    while set_freeze:
+        equipments.read()
+        print('Would you like to return to the main menu? Y/N')
+        get_menu = input()
+        if get_menu in ['Y', 'y']:
+            set_freeze = False
+        elif get_menu in ['N', 'n']:
+            print('We are shutting down the system.')
+            time.sleep(2)
+            set_freeze = False
+            loop_on = False
+    clean_terminal()
+    return loop_on
+
+def action_update_equipment():
+    print('Selected Option: 4... await.')
+    time.sleep(2)
+    clean_terminal()
+    equipments.update()
+

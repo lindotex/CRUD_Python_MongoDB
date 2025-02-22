@@ -3,13 +3,10 @@ from db.conn import ConnectionMongoDB
 import os
 from prettytable import PrettyTable
 
-
-
 class users:
     # PROTOTYPE
     def __init__(self, name, occupation, salary) -> None:
         return (name, occupation, salary)
-
 
     # CRUD - CREATE
     def create():

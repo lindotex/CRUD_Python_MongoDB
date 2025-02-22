@@ -1,10 +1,12 @@
 from dotenv import load_dotenv, find_dotenv
 from db.conn import *
+import datetime
+from time import strftime
 import os
 from prettytable import PrettyTable
 
 
-class instruments:
+class equipments:
     # PROTOTYPE
     def __init__(self):
         pass
@@ -16,19 +18,19 @@ class instruments:
         connection = ConnectionMongoDB(host=db_url)
         
         connection.connect()
-        print('Insert the tag of the instrument:')
+        print('Insert the tag of the equipment:')
         tag = str(input())
         print(f'Insert the serial number of {tag}:')
         serial_number = str(input())
         print(f'Insert the description of {tag}:')
         description = str(input())
-        print(f'Insert the minimum value of the range of {tag}:')
-        minimum_value = float(input())
-        print(f'Insert the maximum value of the range of {tag}:')
-        maximum_value = float(input())
-        document = {"tag":tag,"serial_number":serial_number, "description":description, "minimum_value":minimum_value, "maximum_value":maximum_value}
+        print(f'Insert the last date of maintenance {tag}:')
+        last_maintenance = float(input())
+        print(f'Insert the next date of maintenance {tag}:')
+        next_maintenance = datetime(input())
+        document = {"tag":tag,"serial_number":serial_number, "description":description, "last_maintenance":last_maintenance, "next_maintenance":next_maintenance}
 
-        connection.insert_document('instruments',document)
+        connection.insert_document('equipments',document)
         print(f'{tag} has been successfully added to the database!')
         connection.disconnect()
         
@@ -39,27 +41,27 @@ class instruments:
         connection = ConnectionMongoDB(host=db_url)
         connection.connect()
         print("")
-        connection.quantity_in_collection('instruments')
+        connection.quantity_in_collection('equipments')
         print("")
-        instruments = connection.execute_query("instruments", {})
+        equipments = connection.execute_query("equipments", {})
         
         
-        if instruments:
+        if equipments:
                 
-            t = PrettyTable(['TAG', 'SERIAL', 'DESCRIPTION','MINIMUM','MAXIMUM'])
-            for instrument in instruments:
+            t = PrettyTable(['TAG', 'SERIAL', 'DESCRIPTION','LAST MAINTENANCE','NEXT MAINTENANCE'])
+            for equipment in equipments:
                 
-                tag = instrument.get("tag", "tag not found")
-                serial_number = instrument.get("serial_number", "serial not found")
-                description = instrument.get("description", "description not found")
-                minimum_value = instrument.get("minimum_value", "minimum not found")
-                maximum_value = instrument.get("maximum_value", "maximum not found")
+                tag = equipment.get("tag", "tag not found")
+                serial_number = equipment.get("serial_number", "serial not found")
+                description = equipment.get("description", "description not found")
+                last_maintenance = equipment.get("last_maintenance", "minimum not found")
+                next_maintenance = equipment.get("next_maintenance", "maximum not found")
                 
-                t.add_row([f"{tag}", f"{serial_number}",f"{description}", f"{minimum_value}", f"{maximum_value}"])
+                t.add_row([f"{tag}", f"{serial_number}",f"{description}", f"{strftime(last_maintenance)}", f"{strftime(next_maintenance)}"])
             
             print(t)
         else:
-            print("No document has been found in your collection 'instruments'.")
+            print("No document has been found in your collection 'equipments'.")
         connection.disconnect()
     
     # CRUD - UPDATE  
@@ -80,13 +82,13 @@ class instruments:
             value = str(input())
             new_data = {"serial": value}
             try:
-                connection.update_document('instruments',{"tag":tag}, new_data)
+                connection.update_document('equipments',{"tag":tag}, new_data)
                 print(f'{tag} has been successfully update in database!')
             except Exception as e:
                 print('! It was not possible to update the data: ', e)
-                print(f'The instrument with the tag {tag} has not been found on our database')
+                print(f'The equipment with the tag {tag} has not been found on our database')
         else:
-            print(f'The instrument with the tag {tag} will not be updated.')
+            print(f'The equipment with the tag {tag} will not be updated.')
             
 
         connection.disconnect() 
@@ -97,14 +99,14 @@ class instruments:
         db_url = os.environ.get('MONGO_URL')
         connection = ConnectionMongoDB(host=db_url)
         connection.connect()
-        print('Insert the tag of the person to be removed:')
+        print('Insert the tag of the equipment to be removed:')
         tag = str(input())
         print(f'Would you really like to remove {tag} from your database? Y/N')
         response = str(input())
 
         if (response == 'y' or response == 'Y'):
             try:
-                connection.remove_by_tag('instruments',tag)
+                connection.remove_by_tag('equipments',tag)
                 print(f'{tag} has been successfully removed from the database!')
             except Exception as e:
                 print(f'It was not possible to remove {tag}', e)
