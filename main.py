@@ -63,6 +63,7 @@ def handle_equipment_actions(loop_on):
 loop_on = True
 
 while loop_on:
+    clean_terminal()
     show_menu()
     choice = input("Insert the desired routine number (1, 2 OR 3):")
     

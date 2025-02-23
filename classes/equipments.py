@@ -25,9 +25,9 @@ class equipments:
         print(f'Insert the description of {tag}:')
         description = str(input())
         print(f'Insert the last date of maintenance {tag}:')
-        last_maintenance = float(input())
-        print(f'Insert the next date of maintenance {tag}:')
-        next_maintenance = datetime(input())
+        last_maintenance = int(input())
+        print(f'Insert the next date of maintenyance {tag}:')
+        next_maintenance = int(input())
         document = {"tag":tag,"serial_number":serial_number, "description":description, "last_maintenance":last_maintenance, "next_maintenance":next_maintenance}
 
         connection.insert_document('equipments',document)
@@ -57,7 +57,7 @@ class equipments:
                 last_maintenance = equipment.get("last_maintenance", "minimum not found")
                 next_maintenance = equipment.get("next_maintenance", "maximum not found")
                 
-                t.add_row([f"{tag}", f"{serial_number}",f"{description}", f"{strftime(last_maintenance)}", f"{strftime(next_maintenance)}"])
+                t.add_row([f"{tag}", f"{serial_number}",f"{description}", f"{last_maintenance}", f"{next_maintenance}"])
             
             print(t)
         else:
